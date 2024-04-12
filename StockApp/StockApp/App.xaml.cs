@@ -5,6 +5,10 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using SimpleInjector;
+using StockApp.Models;
+using StockApp.Repositories;
+using StockApp.Repositories.Base;
 
 namespace StockApp
 {
@@ -13,5 +17,22 @@ namespace StockApp
     /// </summary>
     public partial class App : Application
     {
+        public static Container ServiceContainer { get; set; } = new Container();
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            ConfigureContainer();
+
+        }
+
+        private void ConfigureContainer()
+        {
+            ServiceContainer.RegisterSingleton<IProductsRepository<Product>, ProductsRepository>();
+
+            ServiceContainer.Verify();
+        }
+
     }
 }
