@@ -25,6 +25,7 @@ namespace StockApp
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private readonly IProductsRepository<Product> productsRepository;
 
         private string productName;
@@ -38,7 +39,7 @@ namespace StockApp
             {
                 productName = value;
 
-                PropertyChanged.Invoke(sender: this, new PropertyChangedEventArgs(nameof(ProductName)));
+                OnPropertyChanged(nameof(ProductName));
             }
         }
 
@@ -53,7 +54,7 @@ namespace StockApp
             {
                 productDescription = value;
 
-                PropertyChanged.Invoke(sender: this, new PropertyChangedEventArgs(nameof(ProductDescription)));
+                OnPropertyChanged(nameof(ProductDescription));
             }
         }
 
@@ -68,13 +69,13 @@ namespace StockApp
             {
                 productCount = value;
 
-                PropertyChanged.Invoke(sender: this, new PropertyChangedEventArgs(nameof(ProductCount)));
+                OnPropertyChanged(nameof(ProductCount));
             }
         }
 
-        private string productCategory;
+        private Category productCategory;
 
-        public string ProductCategory
+        public Category ProductCategory
         {
 
             get => productCategory;
@@ -83,7 +84,7 @@ namespace StockApp
             {
                 productCategory = value;
 
-                PropertyChanged.Invoke(sender: this, new PropertyChangedEventArgs(nameof(ProductCategory)));
+                OnPropertyChanged(nameof(ProductCategory));
             }
         }
 
@@ -104,7 +105,7 @@ namespace StockApp
             {
                 products = value;
 
-                PropertyChanged.Invoke(sender: this, new PropertyChangedEventArgs(nameof(Products)));
+                OnPropertyChanged(nameof(Products));
             }
         }
 
@@ -119,33 +120,64 @@ namespace StockApp
             {
                 productSelected = value;
 
-                PropertyChanged.Invoke(sender: this, new PropertyChangedEventArgs(nameof(ProductSelected)));
+                OnPropertyChanged(nameof(ProductSelected));
             }
         }
 
 
-        public MainWindow()
+        public MainWindow() 
         {
             InitializeComponent();
 
-            this.productsRepository = new ProductsRepository();
+            this.productsRepository = App.ServiceContainer.GetInstance<IProductsRepository<Product>>();
+
+            Products = productsRepository.GetAll();
 
             this.DataContext = this;
         }
 
-        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        private async void AddProduct_Click(object sender, RoutedEventArgs e)
         {
+           await productsRepository.AddAsync(new Product
+            {
+                Name = ProductName,
 
+                Category = ProductCategory,
+
+                Count = int.Parse(ProductCount),
+
+                Description = ProductDescription,
+            });
+
+            Products = productsRepository.GetAll();
         }
 
-        private void UpdateProduct_Click(object sender, RoutedEventArgs e)
+        private async void UpdateProduct_Click(object sender, RoutedEventArgs e)
         {
+            var product = ProductSelected;
 
+            product.Name = ProductName;
+
+            product.Description = ProductDescription;
+
+            product.Category = ProductCategory;
+
+            product.Count = int.Parse(ProductCount);
+
+            await productsRepository.UpdateAsync(product);
+
+            Products = productsRepository.GetAll();
         }
 
-        private void DeleteProduct_Click(object sender, RoutedEventArgs e)
+        private async void DeleteProduct_Click(object sender, RoutedEventArgs e)
         {
+            await productsRepository.DeleteAsync(ProductSelected.Id);
 
+            Products = productsRepository.GetAll();
+        }
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

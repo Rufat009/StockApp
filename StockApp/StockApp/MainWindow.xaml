@@ -27,9 +27,9 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="1">
-                            <TextBlock FontSize="20" Text="{Binding Name}" Foreground="White"/>
-                            <TextBlock Text="{Binding Description}" Foreground="White"/>
-                            <TextBlock Text="{Binding Count}" Foreground="White"/> <TextBlock Text="{Binding Count}" Foreground="White"/>
+                            <TextBlock FontSize="20" Text="{Binding Name}" Foreground="Black"/>
+                            <TextBlock Text="{Binding Description}" Foreground="Black"/>
+                            <TextBlock Text="{Binding Count}" Foreground="Black"/> <TextBlock Text="{Binding Count}" Foreground="White"/>
                         </StackPanel>
 
 
@@ -42,7 +42,7 @@
             <StackPanel>
                 <TextBox Margin="5" Text="{Binding ProductName}" />
                 <TextBox Margin="5" Text="{Binding ProductDescription}" />
-                <TextBox Margin="5" Text="{Binding ProductCount}t" />
+                <TextBox Margin="5" Text="{Binding ProductCount}" />
                 <ComboBox Margin="5" Text="{Binding ProductCategory}" ItemsSource="{Binding Categories}" />
                 <Button Click="AddProduct_Click" Content="Add Product"  Margin="5"/>
                 <Button Click="UpdateProduct_Click" Content="Update Product" Margin="5"/>

@@ -4,8 +4,9 @@
     "\\StockApp",
     "\\StockApp\\StockApp",
     "\\StockApp\\StockApp\\Models",
-    "\\StockApp\\StockApp\\Repositories"
+    "\\StockApp\\StockApp\\Repositories",
+    "\\StockApp\\StockApp\\Repositories\\Base"
   ],
-  "SelectedNode": "\\StockApp\\StockApp\\MainWindow.xaml",
+  "SelectedNode": "\\StockApp\\StockApp\\MainWindow.xaml.cs",
   "PreviewInSolutionExplorer": false
 }
