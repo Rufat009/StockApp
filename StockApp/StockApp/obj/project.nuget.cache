@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yjfNh/wXEMmRM33P4wT6uAy2Pjvh5YX/heNxVGIENove4JznhEstc8hr5ru7uB8v8m3diQ1MAbo2pC6jUyOqvA==",
+  "dgSpecHash": "8dvj0rKR1IRCBrQYwHO+OGdNj/PxrZfg3bjBefYPNRt2awkQddNCu1sneoq+KySRaGp1kC4rd92fgkD1DeJXoA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Desktop\\Stock\\StockApp\\StockApp\\StockApp\\StockApp.csproj",
+  "projectFilePath": "C:\\Users\\user\\Desktop\\StockApp\\StockApp\\StockApp\\StockApp\\StockApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

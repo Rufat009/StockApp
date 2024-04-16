@@ -1,8 +1,11 @@
 namespace StockApp.Repositories;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using StockApp.Data;
 using StockApp.Models;
 using StockApp.Repositories.Base;
@@ -11,9 +14,9 @@ public class ProductsRepository : IProductsRepository<Product>
 {
     private readonly StockDbContext dbContext;
 
-    public ProductsRepository(StockDbContext dbContext)
+    public ProductsRepository()
     {
-        this.dbContext = dbContext;
+        this.dbContext = new StockDbContext();
     }
 
     public IEnumerable<Product> GetAll()
@@ -52,4 +55,13 @@ public class ProductsRepository : IProductsRepository<Product>
         }
     }
 
+    public async Task<IEnumerable<Product>> SearchAsync(string searchProduct)
+    {
+        return await dbContext.Products.Where(p => p.Name.Contains(searchProduct)).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Product>> FilterAsync(Category category)
+    {
+        return await dbContext.Products.Where(p => p.Category == category).ToListAsync();
+    }
 }

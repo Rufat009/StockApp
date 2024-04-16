@@ -25,6 +25,9 @@ namespace StockApp
 
             ConfigureContainer();
 
+            //var startView = new MainWindow();
+            //startView.ShowDialog();
+
         }
 
         private void ConfigureContainer()
@@ -33,6 +36,7 @@ namespace StockApp
 
             ServiceContainer.Verify();
         }
+
 
     }
 }

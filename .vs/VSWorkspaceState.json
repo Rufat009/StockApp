@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\StockApp",
+    "\\StockApp\\StockApp",
+    "\\StockApp\\StockApp\\Models",
+    "\\StockApp\\StockApp\\Repositories"
+  ],
+  "SelectedNode": "\\StockApp\\StockApp\\MainWindow.xaml",
+  "PreviewInSolutionExplorer": false
+}

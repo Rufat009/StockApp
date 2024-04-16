@@ -6,7 +6,51 @@
         xmlns:local="clr-namespace:StockApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <TextBlock Grid.Row="0" Text="Product Management" FontSize="24" Margin="10"/>
+
+        <ListView SelectedItem="{Binding ProductSelected}"
+                      ItemsSource="{Binding Products}"
+                      Background="Transparent"
+                      Grid.Row="1">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock FontSize="20" Text="{Binding Name}" Foreground="White"/>
+                            <TextBlock Text="{Binding Description}" Foreground="White"/>
+                            <TextBlock Text="{Binding Count}" Foreground="White"/> <TextBlock Text="{Binding Count}" Foreground="White"/>
+                        </StackPanel>
+
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView> 
+
+        <GroupBox Header="Product Details" Grid.Row="1" Margin="10,0,0,10" HorizontalAlignment="Right" Width="300">
+            <StackPanel>
+                <TextBox Margin="5" Text="{Binding ProductName}" />
+                <TextBox Margin="5" Text="{Binding ProductDescription}" />
+                <TextBox Margin="5" Text="{Binding ProductCount}t" />
+                <ComboBox Margin="5" Text="{Binding ProductCategory}" ItemsSource="{Binding Categories}" />
+                <Button Click="AddProduct_Click" Content="Add Product"  Margin="5"/>
+                <Button Click="UpdateProduct_Click" Content="Update Product" Margin="5"/>
+                <Button Click="DeleteProduct_Click" Content="Delete Product"  Margin="5"/>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>
+
+
+
