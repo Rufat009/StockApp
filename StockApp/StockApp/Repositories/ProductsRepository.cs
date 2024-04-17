@@ -57,7 +57,7 @@ public class ProductsRepository : IProductsRepository<Product>
 
     public async Task<IEnumerable<Product>> SearchAsync(string searchProduct)
     {
-        return await dbContext.Products.Where(p => p.Name.Contains(searchProduct)).ToListAsync();
+        return await dbContext.Products.Where(p => p.Name.ToLower().Contains(searchProduct.ToLower())).ToListAsync();
     }
 
     public async Task<IEnumerable<Product>> FilterAsync(Category category)

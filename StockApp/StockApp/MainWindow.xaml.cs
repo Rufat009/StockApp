@@ -43,6 +43,21 @@ namespace StockApp
             }
         }
 
+        private string productSearch;
+
+        public string ProductSearch
+        {
+
+            get => productSearch;
+
+            set
+            {
+                productSearch = value;
+
+                OnPropertyChanged(nameof(ProductSearch));
+            }
+        }
+
         private string productDescription;
 
         public string ProductDescription
@@ -94,6 +109,11 @@ namespace StockApp
             get { return Enum.GetValues(typeof(Category)).Cast<Category>(); }
         }
 
+        public IEnumerable<Category> FilterCategories
+        {
+            get { return Enum.GetValues(typeof(Category)).Cast<Category>(); }
+        }
+
         private IEnumerable<Product> products;
 
         public IEnumerable<Product> Products
@@ -124,6 +144,26 @@ namespace StockApp
             }
         }
 
+        private Category category;
+
+        public Category Category
+        {
+            get => category;
+
+            set
+            {
+                category = value;
+
+                OnPropertyChanged(nameof(Category));
+            }
+        }
+
+        private readonly string namePlaceHolder = "Enter product name...";
+
+        private readonly string descriptionPlaceHolder = "Enter product description...";
+
+        private readonly string countPlaceHolder = "Enter product count...";
+
 
         public MainWindow() 
         {
@@ -132,6 +172,12 @@ namespace StockApp
             this.productsRepository = App.ServiceContainer.GetInstance<IProductsRepository<Product>>();
 
             Products = productsRepository.GetAll();
+
+            ProductName = this.namePlaceHolder;
+
+            ProductDescription = this.descriptionPlaceHolder;
+
+            ProductCount = this.countPlaceHolder;
 
             this.DataContext = this;
         }
@@ -149,7 +195,7 @@ namespace StockApp
                 Description = ProductDescription,
             });
 
-            Products = productsRepository.GetAll();
+            Products = await productsRepository.FilterAsync(Category);
         }
 
         private async void UpdateProduct_Click(object sender, RoutedEventArgs e)
@@ -166,18 +212,53 @@ namespace StockApp
 
             await productsRepository.UpdateAsync(product);
 
-            Products = productsRepository.GetAll();
+            Products = await productsRepository.FilterAsync(Category);
         }
 
         private async void DeleteProduct_Click(object sender, RoutedEventArgs e)
         {
             await productsRepository.DeleteAsync(ProductSelected.Id);
 
-            Products = productsRepository.GetAll();
+            Products = await productsRepository.FilterAsync(Category);
         }
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private async void SearchProducts_Click(object sender, RoutedEventArgs e)
+        {
+             if (!string.IsNullOrWhiteSpace(ProductSearch))
+            {
+                Products = await productsRepository.SearchAsync(ProductSearch);
+            }
+             else
+            {
+                Products = productsRepository.GetAll();
+            }
+        }
+
+        private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ProductCategory != null)
+            {
+                Products = await productsRepository.FilterAsync(Category);
+            }
+        }
+
+        private void NameTextBox_OnFocus(object sender, RoutedEventArgs e)
+        {
+                ProductName = string.Empty;
+        }
+
+        private void DescriptionTextBox_OnFocus(object sender, RoutedEventArgs e)
+        {
+                ProductDescription = string.Empty;
+        }
+
+        private void CountTextBox_OnFocus(object sender, RoutedEventArgs e)
+        {
+                ProductCount = string.Empty;
         }
     }
 }

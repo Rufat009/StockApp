@@ -40,10 +40,12 @@
 
         <GroupBox Header="Product Details" Grid.Row="1" Margin="10,0,0,10" HorizontalAlignment="Right" Width="300">
             <StackPanel>
-                <TextBox Margin="5" Text="{Binding ProductName}" />
-                <TextBox Margin="5" Text="{Binding ProductDescription}" />
-                <TextBox Margin="5" Text="{Binding ProductCount}" />
+                <TextBox Margin="5" Text="{Binding ProductName}" GotFocus="NameTextBox_OnFocus"/>
+                <TextBox Margin="5" Text="{Binding ProductDescription}" GotFocus="DescriptionTextBox_OnFocus"/>
+                <TextBox Margin="5"  Text="{Binding ProductCount}" GotFocus="CountTextBox_OnFocus"/>
                 <ComboBox Margin="5" Text="{Binding ProductCategory}" ItemsSource="{Binding Categories}" />
+                <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="5" Text="{Binding ProductCategory}" ItemsSource="{Binding FilterCategories}" SelectedItem="{Binding Category, Mode=TwoWay}" />
+                <TextBox KeyUp="SearchProducts_Click" x:Name="SearchTextBox" Text="{Binding ProductSearch, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Click="AddProduct_Click" Content="Add Product"  Margin="5"/>
                 <Button Click="UpdateProduct_Click" Content="Update Product" Margin="5"/>
                 <Button Click="DeleteProduct_Click" Content="Delete Product"  Margin="5"/>
