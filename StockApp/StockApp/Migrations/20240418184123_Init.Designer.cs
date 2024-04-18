@@ -12,8 +12,8 @@ using StockApp.Data;
 namespace StockApp.Migrations
 {
     [DbContext(typeof(StockDbContext))]
-    [Migration("20240412112031_Add Init")]
-    partial class AddInit
+    [Migration("20240418184123_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,9 @@ namespace StockApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
+                    b.Property<string>("Categories")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Count")
                         .HasColumnType("int");

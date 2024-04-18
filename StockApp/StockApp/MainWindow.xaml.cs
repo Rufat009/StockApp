@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -88,32 +89,6 @@ namespace StockApp
             }
         }
 
-        private Category productCategory;
-
-        public Category ProductCategory
-        {
-
-            get => productCategory;
-
-            set
-            {
-                productCategory = value;
-
-                OnPropertyChanged(nameof(ProductCategory));
-            }
-        }
-
-
-        public IEnumerable<Category> Categories
-        {
-            get { return Enum.GetValues(typeof(Category)).Cast<Category>(); }
-        }
-
-        public IEnumerable<Category> FilterCategories
-        {
-            get { return Enum.GetValues(typeof(Category)).Cast<Category>(); }
-        }
-
         private IEnumerable<Product> products;
 
         public IEnumerable<Product> Products
@@ -144,19 +119,9 @@ namespace StockApp
             }
         }
 
-        private Category category;
 
-        public Category Category
-        {
-            get => category;
-
-            set
-            {
-                category = value;
-
-                OnPropertyChanged(nameof(Category));
-            }
-        }
+        public List<Category> Categories { get; set; } = new List<Category>();
+    
 
         private readonly string namePlaceHolder = "Enter product name...";
 
@@ -188,14 +153,16 @@ namespace StockApp
             {
                 Name = ProductName,
 
-                Category = ProductCategory,
+                Categories = Categories,
 
                 Count = int.Parse(ProductCount),
 
                 Description = ProductDescription,
+
             });
 
-            Products = await productsRepository.FilterAsync(Category);
+            Products = productsRepository.GetAll();
+
         }
 
         private async void UpdateProduct_Click(object sender, RoutedEventArgs e)
@@ -206,20 +173,20 @@ namespace StockApp
 
             product.Description = ProductDescription;
 
-            product.Category = ProductCategory;
+            product.Categories = Categories;
 
             product.Count = int.Parse(ProductCount);
 
             await productsRepository.UpdateAsync(product);
 
-            Products = await productsRepository.FilterAsync(Category);
+            Products = productsRepository.GetAll();
         }
 
         private async void DeleteProduct_Click(object sender, RoutedEventArgs e)
         {
             await productsRepository.DeleteAsync(ProductSelected.Id);
 
-            Products = await productsRepository.FilterAsync(Category);
+            Products = productsRepository.GetAll();
         }
         private void OnPropertyChanged(string propertyName)
         {
@@ -238,14 +205,6 @@ namespace StockApp
             }
         }
 
-        private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ProductCategory != null)
-            {
-                Products = await productsRepository.FilterAsync(Category);
-            }
-        }
-
         private void NameTextBox_OnFocus(object sender, RoutedEventArgs e)
         {
                 ProductName = string.Empty;
@@ -259,6 +218,46 @@ namespace StockApp
         private void CountTextBox_OnFocus(object sender, RoutedEventArgs e)
         {
                 ProductCount = string.Empty;
+        }
+
+        private void CheckBox_FoodCheck(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkbox) 
+            { 
+                AddCategory(checkbox);
+            }
+
+        }
+
+        private void CheckBox_ElectronicalEquipmentCheck(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkbox)
+            {
+                AddCategory(checkbox);
+            }
+        }
+
+        private void CheckBox_ConstructionalMaterialCheck(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkbox) 
+            { 
+                AddCategory(checkbox); 
+            }
+        }
+
+        private void AddCategory(CheckBox checkbox)
+        {
+
+            Enum.TryParse((string)checkbox.Content, out Category category);
+
+
+            if (Categories.Contains(category))
+            {
+                Categories.Remove(category);   
+                return;
+            }
+
+            Categories.Add(category);
         }
     }
 }

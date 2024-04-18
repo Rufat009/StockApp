@@ -29,10 +29,27 @@
                         <StackPanel Grid.Column="1">
                             <TextBlock FontSize="20" Text="{Binding Name}" Foreground="Black"/>
                             <TextBlock Text="{Binding Description}" Foreground="Black"/>
-                            <TextBlock Text="{Binding Count}" Foreground="Black"/> <TextBlock Text="{Binding Count}" Foreground="White"/>
+                            <TextBlock Text="{Binding Count}" Foreground="Black"/>
+
+                            <ListView
+                      ItemsSource="{Binding Categories}"
+                      Background="Transparent">
+                            <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock FontSize="20" Text="{Binding }" Foreground="Black"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
                         </StackPanel>
-
-
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -43,8 +60,9 @@
                 <TextBox Margin="5" Text="{Binding ProductName}" GotFocus="NameTextBox_OnFocus"/>
                 <TextBox Margin="5" Text="{Binding ProductDescription}" GotFocus="DescriptionTextBox_OnFocus"/>
                 <TextBox Margin="5"  Text="{Binding ProductCount}" GotFocus="CountTextBox_OnFocus"/>
-                <ComboBox Margin="5" Text="{Binding ProductCategory}" ItemsSource="{Binding Categories}" />
-                <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="5" Text="{Binding ProductCategory}" ItemsSource="{Binding FilterCategories}" SelectedItem="{Binding Category, Mode=TwoWay}" />
+                <CheckBox Margin="5" Content="Food" Checked="CheckBox_FoodCheck" />
+                <CheckBox Margin="5" Content="ElectronicalEquipment" Checked="CheckBox_ElectronicalEquipmentCheck"/>
+                <CheckBox Margin="5" Content="ConstructionalMaterial" Checked="CheckBox_ConstructionalMaterialCheck"/>
                 <TextBox KeyUp="SearchProducts_Click" x:Name="SearchTextBox" Text="{Binding ProductSearch, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Click="AddProduct_Click" Content="Add Product"  Margin="5"/>
                 <Button Click="UpdateProduct_Click" Content="Update Product" Margin="5"/>

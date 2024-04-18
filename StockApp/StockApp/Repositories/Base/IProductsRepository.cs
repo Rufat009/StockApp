@@ -20,5 +20,4 @@ public interface IProductsRepository<TEntity>
 
     Task<IEnumerable<Product>> SearchAsync(string searchProduct);
 
-    Task<IEnumerable<Product>> FilterAsync(Category ñategory);
 }

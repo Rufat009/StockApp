@@ -19,6 +19,8 @@ namespace StockApp
     {
         public static Container ServiceContainer { get; set; } = new Container();
 
+        public static string connectionString = $"Server=localhost;Database=StockApp;User Id=admin;Password=admin;TrustServerCertificate=True;";
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

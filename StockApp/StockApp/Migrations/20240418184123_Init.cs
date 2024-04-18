@@ -5,7 +5,7 @@
 namespace StockApp.Migrations
 {
     /// <inheritdoc />
-    public partial class AddInit : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace StockApp.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Count = table.Column<int>(type: "int", nullable: true),
-                    Category = table.Column<int>(type: "int", nullable: false)
+                    Categories = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

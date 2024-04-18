@@ -2,21 +2,27 @@ namespace StockApp.Repositories;
 
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 using StockApp.Data;
 using StockApp.Models;
 using StockApp.Repositories.Base;
+using StockApp.SqlTypeHandlers;
 
 public class ProductsRepository : IProductsRepository<Product>
 {
+
     private readonly StockDbContext dbContext;
 
     public ProductsRepository()
     {
         this.dbContext = new StockDbContext();
+
+        SqlMapper.AddTypeHandler(new CategoryTypeHandler());
     }
 
     public IEnumerable<Product> GetAll()
@@ -34,6 +40,7 @@ public class ProductsRepository : IProductsRepository<Product>
         dbContext.Products.Add(product);
 
         await dbContext.SaveChangesAsync();
+
     }
 
     public async Task UpdateAsync(Product product)
@@ -57,11 +64,12 @@ public class ProductsRepository : IProductsRepository<Product>
 
     public async Task<IEnumerable<Product>> SearchAsync(string searchProduct)
     {
-        return await dbContext.Products.Where(p => p.Name.ToLower().Contains(searchProduct.ToLower())).ToListAsync();
-    }
+        using (var connection = new SqlConnection(App.connectionString))
+        {
+            await connection.OpenAsync();
 
-    public async Task<IEnumerable<Product>> FilterAsync(Category category)
-    {
-        return await dbContext.Products.Where(p => p.Category == category).ToListAsync();
+            var sql = "SELECT * FROM Products WHERE Name LIKE @Name";
+            return (await connection.QueryAsync<Product>(sql, new { Name = $"%{searchProduct}%" })).ToList();
+        }
     }
 }
